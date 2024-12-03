@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Learning Platform</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>E-Learning Platform</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#courses" id="coursesLink" style="display:none;">Courses</a></li>
+                <li><a href="#assignments" id="assignmentsLink" style="display:none;">Assignments</a></li>
+                <li><a href="#profile" id="profileLink">Profile</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home">
+            <h2>Welcome to the E-Learning Platform</h2>
+            <div>
+                <label for="roleSelect">Select Role: </label>
+                <select id="roleSelect">
+                    <option value="student">Student</option>
+                    <option value="instructor">Instructor</option>
+                    <option value="admin">Admin</option>
+                </select>
+                <button onclick="setRole()">Login</button>
+            </div>
+        </section>
+
+        <section id="courses" style="display:none;">
+            <h2>Courses</h2>
+            <p>List of available courses:</p>
+            <div id="courses-list"></div>
+            <div id="instructor-tools" style="display:none;">
+                <button onclick="createCourse()">Create Course</button>
+                <div id="newCourseForm" style="display:none;">
+                    <input type="text" id="newCourseTitle" placeholder="Course Title">
+                    <button onclick="addCourse()">Add Course</button>
+                </div>
+                <div id="studentManagementSection" style="display:none;">
+                    <h3>Student Management</h3>
+                    <label for="studentName">Student Name: </label>
+                    <input type="text" id="studentName" placeholder="Enter student name">
+                    <button onclick="addStudent()">Add Student</button>
+                    <button onclick="removeStudent()">Remove Student</button>
+                    <div id="studentList">
+                        <h4>Students Enrolled:</h4>
+                        <ul id="students"></ul>
+                    </div>
+                </div>
+                <div id="announcementSection" style="display:none;">
+                    <h3>Course Announcements</h3>
+                    <textarea id="announcementText" rows="3" placeholder="Enter announcement here"></textarea>
+                    <button onclick="postAnnouncement()">Post Announcement</button>
+                    <div id="announcements">
+                        <h4>Recent Announcements:</h4>
+                        <ul id="announcementList"></ul>
+                    </div>
+                </div>
+                <div id="quizManagementSection" style="display:none;">
+                    <h3>Manage Quizzes</h3>
+                    <input type="text" id="quizQuestion" placeholder="Enter quiz question">
+                    <button onclick="addQuizQuestion()">Add Question</button>
+                    <div id="quizQuestions">
+                        <h4>Quiz Questions:</h4>
+                        <ul id="questionList"></ul>
+                    </div>
+                    <h3>Take Quiz</h3>
+                    <button onclick="startQuiz()">Start Quiz</button>
+                    <div id="quizArea" style="display:none;">
+                        <div id="currentQuestion"></div>
+                        <button onclick="submitAnswer()">Next</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="assignments" style="display:none;">
+            <h2>Assignments</h2>
+            <p>Submit your assignments here:</p>
+            <form id="assignmentForm">
+                <label for="assignmentFile">Upload Assignment:</label>
+                <input type="file" id="assignmentFile">
+                <button type="button" onclick="submitAssignment()">Submit</button>
+                <p id="assignmentMessage"></p>
+            </form>
+            <div id="gradeAssignments" style="display:none;">
+                <h3>Grade Assignments</h3>
+                <p>Assignments for grading will be listed here:</p>
+            </div>
+        </section>
+
+        <section id="profile">
+            <h2>Profile</h2>
+            <p>User details and preferences can be updated here.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 E-Learning Platform. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
