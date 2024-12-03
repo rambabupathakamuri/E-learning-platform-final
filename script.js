@@ -1,6 +1,13 @@
-// Updated script.js with improved role-based visibility
+// Updated script.js with improved role-based visibility, navigation, interaction features, and modal popups
+
+// On window load, hide all sections initially and add tooltips
 window.onload = function () {
-    // Hide all role-based sections initially
+    hideAllSections();
+    addNavigationTooltips(); // Add tooltips to navigation links
+};
+
+// Function to hide all sections at the start or upon logout
+function hideAllSections() {
     document.getElementById('courses').style.display = 'none';
     document.getElementById('assignments').style.display = 'none';
     document.getElementById('instructor-tools').style.display = 'none';
@@ -9,18 +16,11 @@ window.onload = function () {
     document.getElementById('quizManagementSection').style.display = 'none';
     document.getElementById('gradeAssignments').style.display = 'none';
     document.getElementById('quizArea').style.display = 'none';
-};
+}
 
 // Setting up user roles
 function setRole() {
-    // Hide all sections at first
-    document.getElementById('courses').style.display = 'none';
-    document.getElementById('assignments').style.display = 'none';
-    document.getElementById('instructor-tools').style.display = 'none';
-    document.getElementById('studentManagementSection').style.display = 'none';
-    document.getElementById('announcementSection').style.display = 'none';
-    document.getElementById('quizManagementSection').style.display = 'none';
-    document.getElementById('gradeAssignments').style.display = 'none';
+    hideAllSections(); // Hide all sections at first
 
     // Determine role and display appropriate sections
     const role = document.getElementById('roleSelect').value;
@@ -35,16 +35,87 @@ function setRole() {
         document.getElementById('studentManagementSection').style.display = 'block';
         document.getElementById('announcementSection').style.display = 'block';
         document.getElementById('quizManagementSection').style.display = 'block';
-        loadAssignmentsForGrading();
+        loadAssignmentsForGrading(); // Load assignments for grading
     } else if (role === 'admin') {
         document.getElementById('courses').style.display = 'block';
         document.getElementById('assignments').style.display = 'block';
         document.getElementById('announcementSection').style.display = 'block';
     }
-    alert(`Logged in as ${role}`);
+
+    showLogoutButton(); // Show the logout button
+
+    // Scroll to the first visible section and show modal alert for login
+    document.getElementById('assignments').scrollIntoView({ behavior: 'smooth' });
+    alertModal(`Logged in as ${role}`);
 }
 
-// Script for managing assignment submission
+// Function to highlight the active navigation item
+function setActiveNav(sectionId) {
+    const navLinks = document.querySelectorAll('nav ul li a');
+    navLinks.forEach(link => link.classList.remove('active'));
+    const activeLink = document.querySelector(`nav ul li a[href="${sectionId}"]`);
+    if (activeLink) {
+        activeLink.classList.add('active');
+    }
+}
+
+// Scroll to section when navigation link is clicked
+function scrollToSection(sectionId) {
+    const section = document.querySelector(sectionId);
+    if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+        setActiveNav(sectionId);
+    }
+}
+
+// Logout function to reset the view
+function logout() {
+    hideAllSections();
+    document.getElementById('roleSelect').value = 'student';
+    document.getElementById('logoutButton').style.display = 'none';
+    alertModal('Logged out successfully');
+}
+
+// Show the logout button after login
+function showLogoutButton() {
+    const logoutButton = document.getElementById('logoutButton');
+    if (!logoutButton) {
+        const button = document.createElement('button');
+        button.id = 'logoutButton';
+        button.textContent = 'Logout';
+        button.onclick = logout;
+        document.querySelector('header').appendChild(button);
+    } else {
+        logoutButton.style.display = 'block';
+    }
+}
+
+// Modal alert function to enhance user feedback
+function alertModal(message) {
+    let modal = document.createElement('div');
+    modal.className = 'modal';
+    let modalContent = document.createElement('div');
+    modalContent.className = 'modal-content';
+    modalContent.innerHTML = `<p>${message}</p><button onclick="closeModal()">Close</button>`;
+    modal.appendChild(modalContent);
+    document.body.appendChild(modal);
+    modal.style.display = 'flex';
+}
+
+// Close modal function
+function closeModal() {
+    document.querySelector('.modal').remove();
+}
+
+// Add tooltips to navigation links to improve usability
+function addNavigationTooltips() {
+    const navLinks = document.querySelectorAll('nav ul li a');
+    navLinks.forEach(link => {
+        link.title = `Go to ${link.innerText}`;
+    });
+}
+
+// Script for managing assignment submissions
 function submitAssignment() {
     const assignmentFile = document.getElementById('assignmentFile').files[0];
     if (!assignmentFile) {
@@ -58,18 +129,19 @@ function submitAssignment() {
     }
 }
 
-// Simple validation function
+// Simple validation function to check file types
 function validateFile(file) {
     const allowedExtensions = ['pdf', 'doc', 'docx'];
     const fileExtension = file.name.split('.').pop().toLowerCase();
     return allowedExtensions.includes(fileExtension);
 }
 
-// Manage instructor tools
+// Function to show course creation form
 function createCourse() {
     document.getElementById('newCourseForm').style.display = 'block';
 }
 
+// Function to add a course to the courses list
 function addCourse() {
     const newCourseTitle = document.getElementById('newCourseTitle').value;
     if (newCourseTitle) {
@@ -84,7 +156,7 @@ function addCourse() {
     }
 }
 
-// Managing students
+// Managing students - adding and removing from the list
 let students = [];
 
 function addStudent() {
@@ -120,7 +192,7 @@ function updateStudentList() {
     });
 }
 
-// Managing announcements
+// Managing announcements - posting and displaying them
 let announcements = [];
 
 function postAnnouncement() {
@@ -144,7 +216,7 @@ function updateAnnouncements() {
     });
 }
 
-// Manage grading
+// Manage grading - grading assignments
 function loadAssignmentsForGrading() {
     const gradeAssignmentsDiv = document.getElementById('gradeAssignments');
     if (gradeAssignmentsDiv) {
@@ -163,7 +235,7 @@ function gradeAssignment(studentID, assignmentID, grade) {
     alert(`Assignment graded for student ${studentID} with grade: ${grade}`);
 }
 
-// Quiz Management
+// Quiz Management - adding questions and taking quizzes
 let quizQuestions = [];
 let currentQuestionIndex = 0;
 

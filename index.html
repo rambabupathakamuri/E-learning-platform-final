@@ -11,11 +11,11 @@
         <h1>E-Learning Platform</h1>
         <nav>
             <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#courses" id="coursesLink" style="display:none;">Courses</a></li>
-                <li><a href="#assignments" id="assignmentsLink" style="display:none;">Assignments</a></li>
-                <li><a href="#profile" id="profileLink">Profile</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="#home" onclick="scrollToSection('#home')">Home</a></li>
+                <li><a href="#courses" id="coursesLink" onclick="scrollToSection('#courses')" style="display:none;">Courses</a></li>
+                <li><a href="#assignments" id="assignmentsLink" onclick="scrollToSection('#assignments')" style="display:none;">Assignments</a></li>
+                <li><a href="#profile" id="profileLink" onclick="scrollToSection('#profile')">Profile</a></li>
+                <li><a href="#contact" onclick="scrollToSection('#contact')">Contact</a></li>
             </ul>
         </nav>
     </header>
@@ -23,6 +23,7 @@
     <main>
         <section id="home">
             <h2>Welcome to the E-Learning Platform</h2>
+            <img src="https://via.placeholder.com/800x300" alt="E-Learning Platform" style="width:100%; border-radius: 10px; margin-bottom: 20px;">
             <div>
                 <label for="roleSelect">Select Role: </label>
                 <select id="roleSelect">
